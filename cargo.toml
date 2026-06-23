@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "crates/mogu-core",
+    "crates/mogu-ffi"
+]
