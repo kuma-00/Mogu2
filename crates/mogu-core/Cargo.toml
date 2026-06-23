@@ -1,0 +1,11 @@
+[package]
+name = "mogu-core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+image = "0.25.9"
+ndarray = "0.17.1"
+ort = { version = "2.0.0-rc.12", features = ["ndarray"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

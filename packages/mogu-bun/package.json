@@ -1,0 +1,12 @@
+{
+  "name": "mogu-bun",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@huggingface/hub": "^2.13.2",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7.0.1-rc"
+  }
+}
