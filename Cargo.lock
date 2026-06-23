@@ -616,6 +616,13 @@ dependencies = [
 [[package]]
 name = "mogu-ffi"
 version = "0.1.0"
+dependencies = [
+ "image",
+ "libc",
+ "mogu-core",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "moxcms"
