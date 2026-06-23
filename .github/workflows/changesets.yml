@@ -1,0 +1,38 @@
+name: Changesets
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: changesets-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  packages: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+
+      - run: bun install --frozen-lockfile
+
+      - name: Create Version PR or tag release
+        uses: changesets/action@v1
+        with:
+          version: bun run version-packages
+          publish: bun run tag-release
+          title: "chore: version packages"
+          commit: "chore: version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

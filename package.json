@@ -2,11 +2,19 @@
   "name": "mogu2",
   "type": "module",
   "private": true,
-  "devDependencies": {
-    "@huggingface/hub": "^2.13.2",
-    "@types/bun": "latest"
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "changeset": "changeset",
+    "version-packages": "changeset version && node scripts/sync-cargo-version.mjs",
+    "tag-release": "node scripts/tag-release.mjs",
+    "typecheck": "tsc --noEmit"
   },
-  "peerDependencies": {
+  "devDependencies": {
+    "@changesets/cli": "^2.29.0",
+    "@huggingface/hub": "^2.13.2",
+    "@types/bun": "latest",
     "typescript": "^7.0.1-rc"
   }
 }

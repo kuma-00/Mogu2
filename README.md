@@ -8,6 +8,32 @@
 - `packages/mogu-bun`: Bun から mogu-core を呼び出すためのパッケージ（FFI 経由）。
 - `scripts`: 各種自動化スクリプト。
 
+## リリース（Changesets）
+
+`@kuma-00/mogu-bun` とプラットフォーム別 FFI パッケージは [Changesets](https://github.com/changesets/changesets) でバージョン管理します。
+
+### 開発者フロー
+
+```bash
+# 1. 変更後に changeset を追加
+bun changeset
+
+# 2. PR に .changeset/*.md を含めて main へ merge
+# 3. GitHub Actions が "Version Packages" PR を自動作成 → merge
+# 4. vX.Y.Z タグが push され、Release ワークフローが GitHub Packages へ publish
+```
+
+手動での `git tag` push は不要です（非推奨）。publish の再実行が必要な場合は Actions タブから **Release** ワークフローを `workflow_dispatch` で実行できます。
+
+### 利用者向けインストール
+
+```bash
+echo "@kuma-00:registry=https://npm.pkg.github.com" >> .npmrc
+echo "//npm.pkg.github.com/:_authToken=<your-pat>" >> .npmrc
+
+bun install @kuma-00/mogu-bun
+```
+
 ## クイックスタート
 
 ### 1. 依存関係のインストール

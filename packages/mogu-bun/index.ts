@@ -1,6 +1,6 @@
 import { dlopen, FFIType, CString, ptr, type Pointer } from "bun:ffi";
-import { existsSync } from "fs";
-import { resolve, join, dirname } from "path";
+import { existsSync } from "node:fs";
+import { resolve, join } from "node:path";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -64,7 +64,7 @@ export interface FoodDetectorConfig {
 // ─── Library loading ─────────────────────────────────────────────────────────
 
 function findLibrary(): string {
-  const thisDir = dirname(import.meta.path);
+  const thisDir = import.meta.dir;
   const platform = process.platform;
   const arch = process.arch;
 
