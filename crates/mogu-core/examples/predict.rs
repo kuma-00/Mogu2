@@ -14,7 +14,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let model_path = if args.len() >= 3 {
         args[2].clone()
     } else {
-        "/Users/kuma/Documents/code/gbot-v8Engine/node_modules/mogu-bun/bin/model.onnx".to_string()
+        "../../models/MobileNetV4-Conv-Small.onnx".to_string()
     };
 
     if !Path::new(&model_path).exists() {
