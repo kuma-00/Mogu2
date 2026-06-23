@@ -26,7 +26,7 @@ pub struct FoodDetectionResult {
     pub top_labels: Vec<PredictionLabel>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct FoodDetectorConfig {
     pub threshold: f32,
     pub weak_threshold: f32,

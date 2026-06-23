@@ -116,19 +116,6 @@ const lib = dlopen(findLibrary(), {
     args: [FFIType.pointer],
     returns: FFIType.void,
   },
-  detector_set_config: {
-    args: [
-      FFIType.pointer, // detector*
-      FFIType.f32,     // threshold
-      FFIType.f32,     // weak_threshold
-      FFIType.f32,     // tableware_weight
-      FFIType.f32,     // drink_weight
-      FFIType.f32,     // cooking_tool_weight
-      FFIType.f32,     // food_context_weight
-      FFIType.u64,     // top_k (usize → u64 on 64-bit)
-    ],
-    returns: FFIType.void,
-  },
   detector_detect_food: {
     args: [
       FFIType.pointer, // detector*
@@ -144,9 +131,25 @@ const lib = dlopen(findLibrary(), {
     ],
     returns: FFIType.pointer,
   },
+  detector_get_default_config: {
+    args: [],
+    returns: FFIType.pointer,
+  },
+  detector_set_config_json: {
+    args: [
+      FFIType.pointer, // detector*
+      FFIType.cstring, // config_json
+    ],
+    returns: FFIType.pointer,
+  },
 });
 
 // ─── Helper ──────────────────────────────────────────────────────────────────
+
+export function getDefaultConfig(): FoodDetectorConfig {
+  const rawPtr = lib.symbols.detector_get_default_config() as Pointer | null;
+  return readAndFreeJsonPointer(rawPtr) as FoodDetectorConfig;
+}
 
 function readAndFreeJsonPointer(rawPtr: Pointer | null): unknown {
   if (rawPtr === null) {
@@ -169,7 +172,7 @@ function readAndFreeJsonPointer(rawPtr: Pointer | null): unknown {
 // ─── FoodDetector ────────────────────────────────────────────────────────────
 
 export class FoodDetector {
-  readonly #ptr: Pointer;
+  #ptr: Pointer | null;
 
   constructor(modelPath: string) {
     const resolved = resolve(modelPath);
@@ -190,26 +193,16 @@ export class FoodDetector {
    * Only the fields you supply will be changed; others retain their defaults.
    */
   setConfig(config: FoodDetectorConfig): void {
-    const {
-      threshold = 0.40,
-      weak_threshold = 0.28,
-      tableware_weight = 0.35,
-      drink_weight = 0.90,
-      cooking_tool_weight = 0.15,
-      food_context_weight = 0.20,
-      top_k = 10,
-    } = config;
-
-    lib.symbols.detector_set_config(
+    if (this.#ptr === null) {
+      throw new Error("FoodDetector is already closed");
+    }
+    const configJson = JSON.stringify(config);
+    const configBuf = Buffer.from(configJson + "\0");
+    const rawPtr = lib.symbols.detector_set_config_json(
       this.#ptr,
-      threshold,
-      weak_threshold,
-      tableware_weight,
-      drink_weight,
-      cooking_tool_weight,
-      food_context_weight,
-      top_k
-    );
+      configBuf
+    ) as Pointer | null;
+    readAndFreeJsonPointer(rawPtr);
   }
 
   /**
@@ -221,6 +214,9 @@ export class FoodDetector {
   detectFood(
     image: string | Uint8Array | Buffer | ArrayBuffer
   ): FoodDetectionResult {
+    if (this.#ptr === null) {
+      throw new Error("FoodDetector is already closed");
+    }
     let rawPtr: Pointer | null;
 
     if (typeof image === "string") {
@@ -247,7 +243,11 @@ export class FoodDetector {
 
   /** Release the native detector and all associated resources. */
   close(): void {
+    if (this.#ptr === null) {
+      return;
+    }
     lib.symbols.detector_free(this.#ptr);
+    this.#ptr = null;
   }
 
   [Symbol.dispose](): void {
