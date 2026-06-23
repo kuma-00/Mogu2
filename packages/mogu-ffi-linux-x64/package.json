@@ -1,0 +1,12 @@
+{
+  "name": "@kuma-00/mogu-ffi-linux-x64",
+  "version": "0.1.0",
+  "description": "Prebuilt libmogu_ffi for Linux x86_64",
+  "os": ["linux"],
+  "cpu": ["x64"],
+  "files": ["libmogu_ffi.so"],
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

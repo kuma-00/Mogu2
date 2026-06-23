@@ -64,15 +64,26 @@ export interface FoodDetectorConfig {
 // ─── Library loading ─────────────────────────────────────────────────────────
 
 function findLibrary(): string {
-  // Search relative to this file (development layout)
   const thisDir = dirname(import.meta.path);
+  const platform = process.platform;
+  const arch = process.arch;
+
+  const libName =
+    platform === "win32"
+      ? "mogu_ffi.dll"
+      : platform === "darwin"
+        ? "libmogu_ffi.dylib"
+        : "libmogu_ffi.so";
+
+  const pkgName = `@kuma-00/mogu-ffi-${platform}-${arch}`;
+
   const candidates = [
-    // workspace root / crates/mogu-ffi target dirs
-    join(thisDir, "../../crates/mogu-ffi/target/debug/libmogu_ffi.dylib"),
-    join(thisDir, "../../crates/mogu-ffi/target/release/libmogu_ffi.dylib"),
-    join(thisDir, "../../target/debug/libmogu_ffi.dylib"),
-    join(thisDir, "../../target/release/libmogu_ffi.dylib"),
-    // Fallback: env var
+    join(thisDir, "node_modules", pkgName, libName),
+    join(thisDir, "../..", "node_modules", pkgName, libName),
+    join(thisDir, "../../target/debug", libName),
+    join(thisDir, "../../target/release", libName),
+    join(thisDir, "../../crates/mogu-ffi/target/debug", libName),
+    join(thisDir, "../../crates/mogu-ffi/target/release", libName),
     process.env["MOGU_FFI_LIB"] ?? "",
   ];
 
@@ -83,9 +94,12 @@ function findLibrary(): string {
   }
 
   throw new Error(
-    `libmogu_ffi shared library not found. ` +
-      `Run \`cargo build --package mogu-ffi\` first, or set the MOGU_FFI_LIB ` +
-      `environment variable to the path of the built library.`
+    `libmogu_ffi shared library not found.\n` +
+      `  Tried:\n${candidates.filter(Boolean).map((c) => `    - ${c}`).join("\n")}\n\n` +
+      `  Solutions:\n` +
+      `  1. Install via GitHub Packages: bun install @kuma-00/mogu-bun\n` +
+      `  2. Build manually: cargo build --release --package mogu-ffi\n` +
+      `  3. Set MOGU_FFI_LIB env var to the library path`
   );
 }
 

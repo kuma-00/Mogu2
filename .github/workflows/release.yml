@@ -1,0 +1,79 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            pkg: mogu-ffi-darwin-arm64
+            lib: libmogu_ffi.dylib
+
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            pkg: mogu-ffi-linux-x64
+            lib: libmogu_ffi.so
+
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            pkg: mogu-ffi-win32-x64
+            lib: mogu_ffi.dll
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Build FFI library
+        run: cargo build --release --package mogu-ffi --target ${{ matrix.target }}
+
+      - name: Copy library to package dir
+        shell: bash
+        run: |
+          cp target/${{ matrix.target }}/release/${{ matrix.lib }} \
+             packages/${{ matrix.pkg }}/
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@kuma-00"
+
+      - name: Publish native package
+        working-directory: packages/${{ matrix.pkg }}
+        run: npm publish --access restricted
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-main:
+    needs: build-native
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@kuma-00"
+
+      - name: Publish @kuma-00/mogu-bun
+        working-directory: packages/mogu-bun
+        run: npm publish --access restricted
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,12 @@
+{
+  "name": "@kuma-00/mogu-ffi-darwin-arm64",
+  "version": "0.1.0",
+  "description": "Prebuilt libmogu_ffi for macOS Apple Silicon",
+  "os": ["darwin"],
+  "cpu": ["arm64"],
+  "files": ["libmogu_ffi.dylib"],
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
