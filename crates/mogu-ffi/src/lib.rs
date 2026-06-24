@@ -2,6 +2,10 @@ use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 use mogu_core::{FoodDetector, ImageProcessor};
 
+// TODO: Improve error reporting for detector_new
+// Currently returns null on any error, making it hard to diagnose issues from the Bun side.
+// Consider changing the API to return a struct with both the detector pointer and error message,
+// or add a separate detector_get_last_error() function. This would be a breaking change.
 #[unsafe(no_mangle)]
 pub extern "C" fn detector_new(model_path: *const c_char) -> *mut FoodDetector {
     if model_path.is_null() {

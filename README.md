@@ -92,7 +92,7 @@ use mogu_core::{ImageProcessor, FoodDetector};
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 1. 検出器の初期化
     let mut detector = FoodDetector::new("models/MobileNetV4-Conv-Small.onnx")?;
-    
+
     // 2. 前処理（ImageNet 規格の正規化。アスペクト比維持のリサイズを行います）
     let processor = ImageProcessor::with_imagenet_normalization(224, 224);
 
@@ -105,7 +105,32 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Is Food: {}", result.is_food);
     println!("Food Kind: {:?}", result.kind);
     println!("Total Score: {}", result.score);
-    
+
     Ok(())
 }
 ```
+
+## Bun でのライブラリ使用例
+
+```typescript
+import { FoodDetector } from "@kuma-00/mogu-bun";
+
+// リソース解放の例 (using / Symbol.dispose)
+{
+  using detector = new FoodDetector("models/MobileNetV4-Conv-Small.onnx");
+  const result = detector.detectFood("path/to/food.jpg");
+  console.log("Is Food:", result.is_food);
+  // スコープを抜けると自動的に close() が呼ばれます
+}
+
+// リソース解放の例 (try/finally)
+const detector = new FoodDetector("models/MobileNetV4-Conv-Small.onnx");
+try {
+  const result = detector.detectFood("path/to/food.jpg");
+  console.log("Is Food:", result.is_food);
+} finally {
+  detector.close(); // 必ずリソースを解放してください
+}
+```
+
+**重要:** `FoodDetector` はネイティブリソース（FFI ライブラリの検出器インスタンス）を持つため、使用後に `close()` を呼び出してリソースを解放する必要があります。Bun 1.0.25+ では `using` キーワードと `Symbol.dispose` を使用して自動解放できます。それ以外の環境では `try/finally` で明示的に `close()` を呼んでください。

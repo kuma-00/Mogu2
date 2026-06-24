@@ -78,6 +78,17 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
 
+      - name: Smoke test library loading
+        shell: bash
+        run: |
+          bun --version
+          bun --eval "
+          import { FoodDetector } from './packages/mogu-bun/index.ts';
+          console.log('✅ FoodDetector imported successfully');
+          console.log('Library path loaded from local build');
+          // FoodDetector は生成しないが、import 時点で findLibrary() と dlopen() は実行されるため、共有ライブラリの探索とロード確認にはなる
+          "
+
       - name: Configure npm for GitHub Packages
         shell: bash
         run: |
@@ -89,7 +100,35 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ github.token }}
 
+      - name: Read package name and version
+        id: pkg-info
+        shell: bash
+        run: |
+          cd packages/${{ matrix.pkg }}
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Package: $NAME@$VERSION"
+
+      - name: Check if package version exists in registry
+        id: check-registry
+        shell: bash
+        run: |
+          NAME="${{ steps.pkg-info.outputs.name }}"
+          VERSION="${{ steps.pkg-info.outputs.version }}"
+          if npm view "$NAME@$VERSION" version --registry=https://npm.pkg.github.com > /dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Package $NAME@$VERSION already exists in registry, skipping publish"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Package $NAME@$VERSION not found in registry, will publish"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+
       - name: Publish native package
+        if: steps.check-registry.outputs.exists == 'false'
         working-directory: packages/${{ matrix.pkg }}
         run: npm publish --access restricted --registry=https://npm.pkg.github.com
         env:

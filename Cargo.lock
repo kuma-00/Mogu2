@@ -604,7 +604,7 @@ dependencies = [
 
 [[package]]
 name = "mogu-core"
-version = "0.1.0"
+version = "1.0.4"
 dependencies = [
  "image",
  "ndarray",
@@ -615,7 +615,7 @@ dependencies = [
 
 [[package]]
 name = "mogu-ffi"
-version = "0.1.0"
+version = "1.0.4"
 dependencies = [
  "image",
  "libc",
