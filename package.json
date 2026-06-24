@@ -8,7 +8,8 @@
   "scripts": {
     "changeset": "changeset",
     "version-packages": "changeset version && node scripts/sync-cargo-version.mjs",
-    "tag-release": "node scripts/tag-release.mjs",
+    "publish-main": "node scripts/publish-main.mjs",
+    "echo-noop": "echo 'No-op for changesets action'",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
