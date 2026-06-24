@@ -86,19 +86,24 @@ jobs:
       - name: Build FFI library
         run: cargo build --release --package mogu-ffi --target ${{ matrix.target }}
 
-      - name: Upload packed package
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.pkg }}-tgz
-          path: dist/*.tgz
+      - name: Copy library to package dir
+        shell: bash
+        run: |
+          cp target/${{ matrix.target }}/release/${{ matrix.lib }} \
+             packages/${{ matrix.pkg }}/
 
       - uses: oven-sh/setup-bun@v2
 
-      - uses: actions/setup-node@v6
-        with:
-          node-version: "22"
-          registry-url: "https://npm.pkg.github.com"
-          scope: "@kuma-00"
+      - name: Configure npm for GitHub Packages
+        shell: bash
+        run: |
+          cat > .npmrc <<'EOF'
+          @kuma-00:registry=https://npm.pkg.github.com
+          //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+          always-auth=true
+          EOF
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
       - name: Debug npm auth
         shell: bash
@@ -112,9 +117,6 @@ jobs:
 
           echo "project npmrc:"
           cat .npmrc || true
-
-          echo "whoami:"
-          npm whoami --registry=https://npm.pkg.github.com || true
         env:
           NODE_AUTH_TOKEN: ${{ github.token }}
 
