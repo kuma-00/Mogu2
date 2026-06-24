@@ -86,16 +86,6 @@ jobs:
       - name: Build FFI library
         run: cargo build --release --package mogu-ffi --target ${{ matrix.target }}
 
-      - name: Copy library to package dir
-        shell: bash
-        run: |
-          cp target/${{ matrix.target }}/release/${{ matrix.lib }} \
-             packages/${{ matrix.pkg }}/
-
-      - name: Pack native package
-        working-directory: packages/${{ matrix.pkg }}
-        run: npm pack --pack-destination ../../dist
-
       - name: Upload packed package
         uses: actions/upload-artifact@v4
         with:
@@ -110,11 +100,29 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@kuma-00"
 
-      # - name: Publish native package
-      #   working-directory: packages/${{ matrix.pkg }}
-      #   run: npm publish --access restricted --registry=https://npm.pkg.github.com
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Debug npm auth
+        shell: bash
+        run: |
+          echo "NODE_AUTH_TOKEN length: ${#NODE_AUTH_TOKEN}"
+          echo "npm registry:"
+          npm config get registry
+
+          echo "user npmrc:"
+          cat ~/.npmrc || true
+
+          echo "project npmrc:"
+          cat .npmrc || true
+
+          echo "whoami:"
+          npm whoami --registry=https://npm.pkg.github.com || true
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+
+      - name: Publish native package
+        working-directory: packages/${{ matrix.pkg }}
+        run: npm publish --access restricted --registry=https://npm.pkg.github.com
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-main:
     needs: [release, build-native]
