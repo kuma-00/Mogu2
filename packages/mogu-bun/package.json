@@ -14,9 +14,7 @@
   },
   "devDependencies": {
     "@huggingface/hub": "^2.13.2",
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
+    "@types/bun": "latest",
     "typescript": "^7.0.1-rc"
   },
   "repository": {
