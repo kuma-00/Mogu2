@@ -115,6 +115,12 @@ jobs:
           node-version: "22"
           registry-url: "https://npm.pkg.github.com"
           scope: "@kuma-00"
+      - name: Debug auth
+        run: |
+          echo "actor=${{ github.actor }}"
+          npm whoami --registry=https://npm.pkg.github.com
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
       - name: Publish @kuma-00/mogu-bun
         working-directory: packages/mogu-bun
