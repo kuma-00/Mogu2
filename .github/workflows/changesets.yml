@@ -92,17 +92,17 @@ jobs:
           cp target/${{ matrix.target }}/release/${{ matrix.lib }} \
              packages/${{ matrix.pkg }}/
 
+      - uses: oven-sh/setup-bun@v2
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
           registry-url: "https://npm.pkg.github.com"
           scope: "@kuma-00"
 
-      - uses: oven-sh/setup-bun@v2
-
       - name: Publish native package
         working-directory: packages/${{ matrix.pkg }}
-        run: npm publish --access restricted
+        run: npm publish --access restricted --registry=https://npm.pkg.github.com
         env:
           NODE_AUTH_TOKEN: ${{ github.token }}
 
@@ -117,13 +117,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: oven-sh/setup-bun@v2
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
           registry-url: "https://npm.pkg.github.com"
           scope: "@kuma-00"
-
-      - uses: oven-sh/setup-bun@v2
 
       - name: Publish main package and create GitHub Release
         run: bun run publish-main
