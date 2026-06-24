@@ -1,5 +1,11 @@
 # @kuma-00/mogu-ffi-linux-x64
 
+## 1.0.1
+
+### Patch Changes
+
+- 03e4357: test
+
 ## 1.0.0
 
 ### Major Changes
