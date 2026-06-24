@@ -92,6 +92,16 @@ jobs:
           cp target/${{ matrix.target }}/release/${{ matrix.lib }} \
              packages/${{ matrix.pkg }}/
 
+      - name: Pack native package
+        working-directory: packages/${{ matrix.pkg }}
+        run: npm pack --pack-destination ../../dist
+
+      - name: Upload packed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.pkg }}-tgz
+          path: dist/*.tgz
+
       - uses: oven-sh/setup-bun@v2
 
       - uses: actions/setup-node@v6
@@ -100,11 +110,11 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@kuma-00"
 
-      - name: Publish native package
-        working-directory: packages/${{ matrix.pkg }}
-        run: npm publish --access restricted --registry=https://npm.pkg.github.com
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Publish native package
+      #   working-directory: packages/${{ matrix.pkg }}
+      #   run: npm publish --access restricted --registry=https://npm.pkg.github.com
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-main:
     needs: [release, build-native]
