@@ -23,7 +23,7 @@ git commit -m "fix: correct Bun FoodKind type"
 # 4. GitHub Release / tag / publish が自動実行される
 ```
 
-手動での `git tag` push は不要です（非推奨）。publish の再実行が必要な場合は Actions タブから **Publish** ワークフローを `workflow_dispatch` で実行できます。
+手動での `git tag` push は不要です（非推奨）。publish の再実行が必要な場合は、対象 version が未公開であることを確認して Release Please ワークフローを workflow_dispatch で実行してください。
 
 ### Conventional Commits の例
 
