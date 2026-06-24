@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/kuma-00/Mogu2/compare/v1.0.3...v1.0.4) (2026-06-24)
+
+
+### Code Refactoring
+
+* migrate native build and publish logic from publish workflow into release-please workflow ([de3e83c](https://github.com/kuma-00/Mogu2/commit/de3e83c47e5153ec20673a931a4cf7aeb6cd9f3f))
+
 ## [1.0.3](https://github.com/kuma-00/Mogu2/compare/v1.0.2...v1.0.3) (2026-06-24)
 
 
