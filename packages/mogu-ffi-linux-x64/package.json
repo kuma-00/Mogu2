@@ -1,6 +1,6 @@
 {
   "name": "@kuma-00/mogu-ffi-linux-x64",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Prebuilt libmogu_ffi for Linux x86_64",
   "os": [
     "linux"
