@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/kuma-00/Mogu2/compare/v1.0.4...v1.0.5) (2026-06-24)
+
+
+### Code Refactoring
+
+* simplify publish script and integrate registry checks into release workflow ([f640b9f](https://github.com/kuma-00/Mogu2/commit/f640b9f71cf9d39b9875172d9fe32b716bda2541))
+
 ## [1.0.4](https://github.com/kuma-00/Mogu2/compare/v1.0.3...v1.0.4) (2026-06-24)
 
 
