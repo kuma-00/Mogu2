@@ -44,6 +44,9 @@ jobs:
 
   build-native:
     needs: verify-version
+    permissions:
+      contents: read
+      packages: write
     strategy:
       fail-fast: false
       matrix:
@@ -93,10 +96,13 @@ jobs:
         working-directory: packages/${{ matrix.pkg }}
         run: npm publish --access restricted
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
   publish-main:
     needs: [verify-version, build-native]
+    permissions:
+      contents: read
+      packages: write
     runs-on: ubuntu-latest
 
     steps:
@@ -114,7 +120,7 @@ jobs:
         working-directory: packages/mogu-bun
         run: npm publish --access restricted
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
   create-github-release:
     needs: [verify-version, publish-main]
