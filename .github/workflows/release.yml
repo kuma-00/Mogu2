@@ -103,13 +103,13 @@ jobs:
           echo "actor=${{ github.actor }}"
           npm whoami --registry=https://npm.pkg.github.com
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
       - name: Publish native package
         working-directory: packages/${{ matrix.pkg }}
         run: npm publish --access restricted
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
   publish-main:
     needs: [verify-version, build-native]
@@ -133,13 +133,13 @@ jobs:
           echo "actor=${{ github.actor }}"
           npm whoami --registry=https://npm.pkg.github.com
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
       - name: Publish @kuma-00/mogu-bun
         working-directory: packages/mogu-bun
         run: npm publish --access restricted
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
   create-github-release:
     needs: [verify-version, publish-main]
