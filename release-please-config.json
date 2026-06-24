@@ -80,6 +80,6 @@
     }
   },
   "pull-request-title-pattern": "chore: release ${version}",
-  "commit-search-pattern": "^(feat|fix|chore|docs|style|refactor|perf|test|build|ci)(\\(.+\\))?:",
+  "commit-search-pattern": "^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|deps)(\\(.+\\))?:",
   "changelog-type": "default"
 }
