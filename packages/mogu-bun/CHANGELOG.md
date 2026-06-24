@@ -1,5 +1,11 @@
 # @kuma-00/mogu-bun
 
+## 1.0.2
+
+### Patch Changes
+
+- ec76663: test
+
 ## 1.0.1
 
 ### Patch Changes
