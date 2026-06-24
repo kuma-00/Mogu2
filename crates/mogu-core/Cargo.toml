@@ -1,6 +1,6 @@
 [package]
 name = "mogu-core"
-version = "1.0.3" # x-release-please-version
+version = "1.0.4" # x-release-please-version
 edition = "2024"
 
 [dependencies]
