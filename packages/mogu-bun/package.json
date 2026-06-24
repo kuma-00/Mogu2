@@ -1,6 +1,6 @@
 {
   "name": "@kuma-00/mogu-bun",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "module": "index.ts",
   "type": "module",
   "files": [
@@ -8,9 +8,9 @@
     "example.ts"
   ],
   "optionalDependencies": {
-    "@kuma-00/mogu-ffi-darwin-arm64": "1.0.0",
-    "@kuma-00/mogu-ffi-linux-x64": "1.0.0",
-    "@kuma-00/mogu-ffi-win32-x64": "1.0.0"
+    "@kuma-00/mogu-ffi-darwin-arm64": "1.0.1",
+    "@kuma-00/mogu-ffi-linux-x64": "1.0.1",
+    "@kuma-00/mogu-ffi-win32-x64": "1.0.1"
   },
   "devDependencies": {
     "@huggingface/hub": "^2.13.2",
