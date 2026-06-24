@@ -1,0 +1,85 @@
+{
+  "packages": {
+    ".": {
+      "component": "mogu2",
+      "package-name": "@kuma-00/mogu-bun",
+      "release-type": "node",
+      "changelog-sections": [
+        { "type": "feat", "section": "Features" },
+        { "type": "fix", "section": "Bug Fixes" },
+        { "type": "perf", "section": "Performance Improvements" },
+        { "type": "refactor", "section": "Code Refactoring" },
+        { "type": "chore", "section": "Miscellaneous" },
+        { "type": "docs", "section": "Documentation" },
+        { "type": "style", "section": "Styling" },
+        { "type": "test", "section": "Tests" },
+        { "type": "build", "section": "Build System" },
+        { "type": "ci", "section": "Continuous Integration" },
+        { "type": "deps", "section": "Dependencies" }
+      ],
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": false,
+      "draft": false,
+      "prerelease": false,
+      "include-component-in-tag": false,
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "packages/mogu-bun/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/mogu-bun/package.json",
+          "jsonpath": "$.optionalDependencies.@kuma-00/mogu-ffi-darwin-arm64"
+        },
+        {
+          "type": "json",
+          "path": "packages/mogu-bun/package.json",
+          "jsonpath": "$.optionalDependencies.@kuma-00/mogu-ffi-linux-x64"
+        },
+        {
+          "type": "json",
+          "path": "packages/mogu-bun/package.json",
+          "jsonpath": "$.optionalDependencies.@kuma-00/mogu-ffi-win32-x64"
+        },
+        {
+          "type": "json",
+          "path": "packages/mogu-ffi-darwin-arm64/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/mogu-ffi-linux-x64/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/mogu-ffi-win32-x64/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "toml",
+          "path": "crates/mogu-core/Cargo.toml",
+          "jsonpath": "$.package.version"
+        },
+        {
+          "type": "generic",
+          "path": "crates/mogu-core/Cargo.toml"
+        },
+        {
+          "type": "toml",
+          "path": "crates/mogu-ffi/Cargo.toml",
+          "jsonpath": "$.package.version"
+        },
+        {
+          "type": "generic",
+          "path": "crates/mogu-ffi/Cargo.toml"
+        }
+      ]
+    }
+  },
+  "pull-request-title-pattern": "chore: release ${version}",
+  "commit-search-pattern": "^(feat|fix|chore|docs|style|refactor|perf|test|build|ci)(\\(.+\\))?:",
+  "changelog-type": "default"
+}

@@ -1,6 +1,6 @@
 [package]
 name = "mogu-ffi"
-version = "1.0.2"
+version = "1.0.2" # x-release-please-version
 edition = "2024"
 
 [lib]

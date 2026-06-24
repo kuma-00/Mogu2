@@ -8,22 +8,45 @@
 - `packages/mogu-bun`: Bun から mogu-core を呼び出すためのパッケージ（FFI 経由）。
 - `scripts`: 各種自動化スクリプト。
 
-## リリース（Changesets）
+## リリース（Release Please）
 
-`@kuma-00/mogu-bun` とプラットフォーム別 FFI パッケージは [Changesets](https://github.com/changesets/changesets) でバージョン管理します。
+`@kuma-00/mogu-bun` とプラットフォーム別 FFI パッケージは [Release Please](https://github.com/googleapis/release-please) でバージョン管理します。
 
 ### 開発者フロー
 
 ```bash
-# 1. 変更後に changeset を追加
-bun changeset
+# 1. Conventional Commits 形式で commit する
+git commit -m "fix: correct Bun FoodKind type"
 
-# 2. PR に .changeset/*.md を含めて main へ merge
-# 3. GitHub Actions が "Version Packages" PR を自動作成 → merge
-# 4. vX.Y.Z タグが push され、Release ワークフローが GitHub Packages へ publish
+# 2. main に merge
+# 3. GitHub Actions が Release PR を自動作成 → merge
+# 4. GitHub Release / tag / publish が自動実行される
 ```
 
-手動での `git tag` push は不要です（非推奨）。publish の再実行が必要な場合は Actions タブから **Release** ワークフローを `workflow_dispatch` で実行できます。
+手動での `git tag` push は不要です（非推奨）。publish の再実行が必要な場合は Actions タブから **Publish** ワークフローを `workflow_dispatch` で実行できます。
+
+### Conventional Commits の例
+
+Release Please は Conventional Commits 形式の commit message から changelog と version を自動生成します。
+
+**バージョンアップのルール:**
+- `fix:` - バグ修正 → patch version (1.0.2 → 1.0.3)
+- `feat:` - 新機能 → minor version (1.0.2 → 1.1.0)
+- `perf:` - パフォーマンス改善 → patch version (1.0.2 → 1.0.3)
+- `feat!`, `fix!`, `refactor!` 等（`!`付き）または commit body に `BREAKING CHANGE:` → major version (1.0.2 → 2.0.0)
+- `chore:`, `docs:`, `refactor:`, `test:`, `ci:`, `build:`, `style:` → version bump なし（changelog には含まれる）
+
+**注意:** `chore:` のみの commit では Release PR が作成されません。リリースしたい場合は `fix:` か `feat:` を含めるか、手動で Release PR を作成してください。
+
+**commit 例:**
+- `fix: correct Bun FoodKind type` → patch version
+- `feat: add detectFoodFromUrl` → minor version
+- `perf: optimize image preprocessing` → patch version
+- `chore: update dependencies` → version bump なし
+- `docs: update README` → version bump なし
+- `refactor: simplify image processing` → version bump なし
+- `feat!: breaking API change` → major version
+- `fix: resolve memory leak\n\nBREAKING CHANGE: requires Node 18+` → major version
 
 ### 利用者向けインストール
 

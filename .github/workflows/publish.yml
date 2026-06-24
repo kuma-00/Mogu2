@@ -1,50 +1,21 @@
-name: Changesets
+name: Publish
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
 
 concurrency:
-  group: changesets-${{ github.ref }}
+  group: publish-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: write
   packages: write
-  pull-requests: write
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
-    outputs:
-      hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: oven-sh/setup-bun@v2
-
-      - run: bun install --frozen-lockfile
-
-      - name: Create Version PR
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          # changesets/action needs a publish command to expose hasChangesets=false on release commits.
-          # Actual publishing is done by build-native and publish-main jobs.
-          version: bun run version-packages
-          publish: bun run echo-noop
-          title: "chore: version packages"
-          commit: "chore: version packages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   build-native:
-    needs: release
-    if: needs.release.outputs.hasChangesets == 'false'
     strategy:
       fail-fast: false
       matrix:
@@ -112,8 +83,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-main:
-    needs: [release, build-native]
-    if: needs.release.outputs.hasChangesets == 'false'
+    needs: build-native
     runs-on: ubuntu-latest
     permissions:
       contents: write
