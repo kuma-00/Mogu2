@@ -13,23 +13,12 @@ export type LabelCategory =
   | "Other";
 
 export type FoodKind =
-  | "Bread"
-  | "Rice"
-  | "Noodles"
-  | "Meat"
+  | "Meal"
+  | "Dessert"
+  | "Drink"
+  | "Fruit"
+  | "Vegetable"
   | "Seafood"
-  | "Vegetables"
-  | "Fruits"
-  | "DairyOrEgg"
-  | "Sweets"
-  | "Snacks"
-  | "JapaneseCuisine"
-  | "ChineseCuisine"
-  | "WesternCuisine"
-  | "FastFood"
-  | "Beverage"
-  | "AlcoholicDrink"
-  | "SoftDrink"
   | "UnknownFood";
 
 export interface PredictionLabel {
