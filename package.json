@@ -14,5 +14,6 @@
     "@huggingface/hub": "^2.13.2",
     "@types/bun": "latest",
     "typescript": "^7.0.1-rc"
-  }
+  },
+  "version": "1.0.3"
 }
