@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/kuma-00/Mogu2/compare/v1.0.5...v1.0.6) (2026-07-28)
+
+
+### Continuous Integration
+
+* support token and OIDC npm publishing ([79ff7bb](https://github.com/kuma-00/Mogu2/commit/79ff7bb3ca7ae862bc91f01863c1008d5c4a52ad))
+
 ## [1.0.5](https://github.com/kuma-00/Mogu2/compare/v1.0.4...v1.0.5) (2026-07-28)
 
 
