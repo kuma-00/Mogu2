@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.7](https://github.com/kuma-00/Mogu2/compare/v1.0.6...v1.0.7) (2026-07-28)
+
+
+### Bug Fixes
+
+* normalize npm registry validation ([4a6733d](https://github.com/kuma-00/Mogu2/commit/4a6733d576f1325f973346df0a762c4f86f27013))
+
 ## [1.0.6](https://github.com/kuma-00/Mogu2/compare/v1.0.5...v1.0.6) (2026-07-28)
 
 
