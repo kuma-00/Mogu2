@@ -14,11 +14,12 @@ const absolutePackageDir = resolve(packageDir);
 const pkg = JSON.parse(
   readFileSync(resolve(absolutePackageDir, "package.json"), "utf8"),
 );
+const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const npmCache = mkdtempSync(join(tmpdir(), "mogu-npm-pack-"));
 let output;
 try {
   output = execFileSync(
-    "npm",
+    npmCommand,
     ["pack", "--dry-run", "--json", "--ignore-scripts"],
     {
       cwd: absolutePackageDir,
