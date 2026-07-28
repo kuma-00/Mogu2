@@ -90,8 +90,11 @@ jobs:
         working-directory: packages/${{ matrix.pkg }}
         shell: bash
         run: |
-          test "$(npm config get registry --registry=https://registry.npmjs.org --workspaces=false)" = "https://registry.npmjs.org"
-          test "$(npm config get @kuma-00:registry --@kuma-00:registry=https://registry.npmjs.org --workspaces=false)" = "https://registry.npmjs.org"
+          REGISTRY="$(npm config get registry --registry=https://registry.npmjs.org --workspaces=false)"
+          SCOPE_REGISTRY="$(npm config get @kuma-00:registry --@kuma-00:registry=https://registry.npmjs.org --workspaces=false)"
+
+          test "${REGISTRY%/}" = "https://registry.npmjs.org"
+          test "${SCOPE_REGISTRY%/}" = "https://registry.npmjs.org"
 
           npm --version
           node -p "JSON.stringify(require('./package.json').publishConfig)"
@@ -174,8 +177,11 @@ jobs:
         working-directory: packages/mogu-bun
         shell: bash
         run: |
-          test "$(npm config get registry --registry=https://registry.npmjs.org --workspaces=false)" = "https://registry.npmjs.org"
-          test "$(npm config get @kuma-00:registry --@kuma-00:registry=https://registry.npmjs.org --workspaces=false)" = "https://registry.npmjs.org"
+          REGISTRY="$(npm config get registry --registry=https://registry.npmjs.org --workspaces=false)"
+          SCOPE_REGISTRY="$(npm config get @kuma-00:registry --@kuma-00:registry=https://registry.npmjs.org --workspaces=false)"
+
+          test "${REGISTRY%/}" = "https://registry.npmjs.org"
+          test "${SCOPE_REGISTRY%/}" = "https://registry.npmjs.org"
 
           npm --version
           node -p "JSON.stringify(require('./package.json').publishConfig)"
