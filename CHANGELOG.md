@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.11](https://github.com/kuma-00/Mogu2/compare/v1.0.10...v1.0.11) (2026-07-28)
+
+
+### Continuous Integration
+
+* publish npm packages with OIDC only ([b641835](https://github.com/kuma-00/Mogu2/commit/b64183598815f9bd117a3b83aa8cc47bf1da5558))
+
 ## [1.0.10](https://github.com/kuma-00/Mogu2/compare/v1.0.9...v1.0.10) (2026-07-28)
 
 
