@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/kuma-00/Mogu2/compare/v1.0.11...v1.1.0) (2026-07-28)
+
+
+### Features
+
+* add automatic model download support ([c8bd15d](https://github.com/kuma-00/Mogu2/commit/c8bd15db4ec72f07b856ef1e2cb6d8baab9eff60))
+
 ## [1.0.11](https://github.com/kuma-00/Mogu2/compare/v1.0.10...v1.0.11) (2026-07-28)
 
 
