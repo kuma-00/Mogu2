@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.8](https://github.com/kuma-00/Mogu2/compare/v1.0.7...v1.0.8) (2026-07-28)
+
+
+### Bug Fixes
+
+* expose npm environment secret to publish jobs ([7388354](https://github.com/kuma-00/Mogu2/commit/738835413781243fec7f24f0c187bb0d15b8ec73))
+
 ## [1.0.7](https://github.com/kuma-00/Mogu2/compare/v1.0.6...v1.0.7) (2026-07-28)
 
 
