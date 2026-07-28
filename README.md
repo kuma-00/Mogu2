@@ -20,10 +20,23 @@ git commit -m "fix: correct Bun FoodKind type"
 
 # 2. main に merge
 # 3. GitHub Actions が Release PR を自動作成 → merge
-# 4. GitHub Release / tag / publish が自動実行される
+# 4. GitHub Release / tag / npm publish が自動実行される
 ```
 
-手動での `git tag` push は不要です（非推奨）。publish の再実行が必要な場合は、対象 version が未公開であることを確認して Release Please ワークフローを workflow_dispatch で実行してください。
+手動での `git tag` push は不要です（非推奨）。publish の再実行が必要な場合は、対象 version が npmjs.org で未公開であることを確認して Release Please ワークフローを workflow_dispatch で実行してください。
+
+公開は npm Trusted Publishing（OIDC）を使用します。通常運用では長期的な npm token は不要です。初回公開後、npmjs.org の4パッケージそれぞれで `kuma-00/Mogu2` の `release-please.yml` を Trusted Publisher に設定します。
+
+#### npm 初回公開の準備
+
+未公開パッケージには Trusted Publisher を設定できないため、最初の公開だけnpmのgranular access tokenをGitHub Actionsの `NPM_TOKEN` Secretに登録します。4パッケージの初回公開後は、npmjs.orgで各パッケージに以下を設定してください。
+
+- Provider: GitHub Actions
+- Repository: `kuma-00/Mogu2`
+- Workflow: `release-please.yml`
+- Allowed action: `npm publish`
+
+OIDCでの公開成功を確認したら `NPM_TOKEN` Secretと一時tokenを削除し、各パッケージのPublishing accessを「Require two-factor authentication and disallow tokens」に変更します。
 
 ### Conventional Commits の例
 
@@ -51,11 +64,18 @@ Release Please は Conventional Commits 形式の commit message から changelo
 ### 利用者向けインストール
 
 ```bash
-echo "@kuma-00:registry=https://npm.pkg.github.com" >> .npmrc
-echo "//npm.pkg.github.com/:_authToken=<your-pat>" >> .npmrc
-
-bun install @kuma-00/mogu-bun
+bun add @kuma-00/mogu-bun
 ```
+
+パッケージは npmjs.org で公開されているため、PATや追加の `.npmrc` は不要です。対応するネイティブパッケージは `optionalDependencies` の `os` / `cpu` 条件に従って自動的に導入されます。
+
+対応環境:
+
+- macOS Apple Silicon (`darwin-arm64`)
+- Linux x64 (`linux-x64`)
+- Windows x64 (`win32-x64`)
+
+共有ライブラリを手動でビルドまたは配置する場合は、`MOGU_FFI_LIB` に `.dylib`、`.so`、`.dll` の絶対パスを指定できます。
 
 ## クイックスタート
 

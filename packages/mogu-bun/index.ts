@@ -86,7 +86,7 @@ function findLibrary(): string {
     `libmogu_ffi shared library not found.\n` +
       `  Tried:\n${candidates.filter(Boolean).map((c) => `    - ${c}`).join("\n")}\n\n` +
       `  Solutions:\n` +
-      `  1. Install via GitHub Packages: bun install @kuma-00/mogu-bun\n` +
+      `  1. Install from npm: bun add @kuma-00/mogu-bun\n` +
       `  2. Build manually: cargo build --release --package mogu-ffi\n` +
       `  3. Set MOGU_FFI_LIB env var to the library path`
   );

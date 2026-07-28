@@ -170,3 +170,7 @@ vite.config.ts.timestamp-*
 .DS_Store
 
 models/*.onnx
+
+# Local code intelligence
+.codegraph/
+.serena/

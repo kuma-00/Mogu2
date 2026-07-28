@@ -4,7 +4,7 @@ import { execSync } from "node:child_process";
 const pkg = JSON.parse(readFileSync("packages/mogu-bun/package.json", "utf8"));
 const version = pkg.version;
 const pkgName = "@kuma-00/mogu-bun";
-const npmRegistry = "https://npm.pkg.github.com";
+const npmRegistry = "https://registry.npmjs.org";
 
 console.log(`Publishing ${pkgName} version ${version}`);
 
@@ -37,8 +37,9 @@ if (pkgExists) {
   console.log(`Publishing ${pkgName}@${version}...`);
   try {
     execSync(
-      `cd packages/mogu-bun && npm publish --access restricted --registry=${npmRegistry}`,
+      `npm publish --access public --registry=${npmRegistry} --provenance`,
       {
+        cwd: "packages/mogu-bun",
         stdio: "inherit",
         env: {
           ...process.env,

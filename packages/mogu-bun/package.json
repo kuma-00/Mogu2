@@ -1,8 +1,12 @@
 {
   "name": "@kuma-00/mogu-bun",
   "version": "1.0.4",
+  "description": "Fast food image detection for Bun, powered by Rust and ONNX Runtime",
   "module": "index.ts",
   "type": "module",
+  "engines": {
+    "bun": ">=1.0.25"
+  },
   "files": [
     "index.ts",
     "example.ts"
@@ -17,11 +21,13 @@
     "@types/bun": "latest",
     "typescript": "^7.0.1-rc"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kuma-00/Mogu2.git"
+    "url": "https://github.com/kuma-00/Mogu2.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }
