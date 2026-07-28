@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.9](https://github.com/kuma-00/Mogu2/compare/v1.0.8...v1.0.9) (2026-07-28)
+
+
+### Bug Fixes
+
+* invoke npm correctly on Windows ([8a43049](https://github.com/kuma-00/Mogu2/commit/8a43049c5ccc8d596b5ea5bbcf79c562f8edb99f))
+
 ## [1.0.8](https://github.com/kuma-00/Mogu2/compare/v1.0.7...v1.0.8) (2026-07-28)
 
 
