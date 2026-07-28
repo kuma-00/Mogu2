@@ -37,7 +37,8 @@ if (pkgExists) {
   console.log(`Publishing ${pkgName}@${version}...`);
   try {
     execSync(
-      `npm publish --access public --registry=${npmRegistry} --provenance`,
+      `npm publish --access public --registry=${npmRegistry} ` +
+        `--@kuma-00:registry=${npmRegistry} --workspaces=false`,
       {
         cwd: "packages/mogu-bun",
         stdio: "inherit",

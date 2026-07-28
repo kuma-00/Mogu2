@@ -24,7 +24,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kuma-00/Mogu2.git"
+    "url": "git+https://github.com/kuma-00/Mogu2.git"
   },
   "publishConfig": {
     "access": "public",
