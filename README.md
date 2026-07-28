@@ -131,6 +131,32 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 ```typescript
 import { FoodDetector } from "@kuma-00/mogu-bun";
 
+// 初回のみ、プロジェクトルートの models/ にモデルを自動ダウンロードします。
+// 2回目以降は保存済みのモデルを使用します。
+using detector = await FoodDetector.create();
+const result = detector.detectFood("path/to/food.jpg");
+console.log("Is Food:", result.is_food);
+```
+
+モデルだけを事前にダウンロードすることもできます。保存先は、コマンドを実行した
+プロジェクトの `models/MobileNetV4-Conv-Small.onnx` です。
+
+```bash
+bunx @kuma-00/mogu-bun
+```
+
+保存先を指定する場合や、再ダウンロードする場合は次のように実行します。
+
+```bash
+bunx @kuma-00/mogu-bun --model-path ./models/custom.onnx
+bunx @kuma-00/mogu-bun --force
+```
+
+既存のモデルや独自モデルを指定する場合は、従来どおりコンストラクタへパスを渡せます。
+
+```typescript
+import { FoodDetector } from "@kuma-00/mogu-bun";
+
 // リソース解放の例 (using / Symbol.dispose)
 {
   using detector = new FoodDetector("models/MobileNetV4-Conv-Small.onnx");

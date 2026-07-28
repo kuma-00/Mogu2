@@ -4,20 +4,27 @@
   "description": "Fast food image detection for Bun, powered by Rust and ONNX Runtime",
   "module": "index.ts",
   "type": "module",
+  "bin": {
+    "mogu-download-model": "download-model.ts"
+  },
   "engines": {
     "bun": ">=1.0.25"
   },
   "files": [
     "index.ts",
-    "example.ts"
+    "example.ts",
+    "model.ts",
+    "download-model.ts"
   ],
   "optionalDependencies": {
     "@kuma-00/mogu-ffi-darwin-arm64": "1.0.11",
     "@kuma-00/mogu-ffi-linux-x64": "1.0.11",
     "@kuma-00/mogu-ffi-win32-x64": "1.0.11"
   },
+  "dependencies": {
+    "@huggingface/hub": "^2.13.2"
+  },
   "devDependencies": {
-    "@huggingface/hub": "^2.13.2",
     "@types/bun": "latest",
     "typescript": "^7.0.1-rc"
   },

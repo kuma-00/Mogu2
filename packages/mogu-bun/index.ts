@@ -1,6 +1,20 @@
 import { dlopen, FFIType, CString, ptr, type Pointer } from "bun:ffi";
 import { existsSync } from "node:fs";
 import { resolve, join } from "node:path";
+import {
+  ensureModel,
+  type ModelDownloadOptions,
+} from "./model.ts";
+
+export {
+  DEFAULT_MODEL_FILENAME,
+  DEFAULT_MODEL_REPOSITORY,
+  DEFAULT_MODEL_REPOSITORY_PATH,
+  downloadModel,
+  ensureModel,
+  getDefaultModelPath,
+  type ModelDownloadOptions,
+} from "./model.ts";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -162,6 +176,15 @@ function readAndFreeJsonPointer(rawPtr: Pointer | null): unknown {
 
 export class FoodDetector {
   #ptr: Pointer | null;
+
+  /**
+   * Create a detector, downloading the model into ./models on first use.
+   */
+  static async create(
+    options: ModelDownloadOptions = {},
+  ): Promise<FoodDetector> {
+    return new FoodDetector(await ensureModel(options));
+  }
 
   constructor(modelPath: string) {
     const resolved = resolve(modelPath);
