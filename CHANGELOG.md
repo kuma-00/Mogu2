@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.1](https://github.com/kuma-00/Mogu2/compare/v1.1.0...v1.1.1) (2026-08-02)
+
+
+### Bug Fixes
+
+* align lockfiles with release version ([5b8d308](https://github.com/kuma-00/Mogu2/commit/5b8d30823dacaaf1b3b7bda1375672ea9c5cf4b0))
+
+
+### Build System
+
+* move Bun package sources under src ([4e585d8](https://github.com/kuma-00/Mogu2/commit/4e585d8ed9acc111eadd4db6f7994d3b6c8735ab))
+
 ## [1.1.0](https://github.com/kuma-00/Mogu2/compare/v1.0.11...v1.1.0) (2026-07-28)
 
 
