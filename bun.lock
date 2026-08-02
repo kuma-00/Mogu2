@@ -12,7 +12,7 @@
     },
     "packages/mogu-bun": {
       "name": "@kuma-00/mogu-bun",
-      "version": "1.0.11",
+      "version": "1.1.0",
       "bin": {
         "mogu-download-model": "src/download-model.ts",
       },
@@ -24,22 +24,22 @@
         "typescript": "^7.0.1-rc",
       },
       "optionalDependencies": {
-        "@kuma-00/mogu-ffi-darwin-arm64": "1.0.11",
-        "@kuma-00/mogu-ffi-linux-x64": "1.0.11",
-        "@kuma-00/mogu-ffi-win32-x64": "1.0.11",
+        "@kuma-00/mogu-ffi-darwin-arm64": "1.1.0",
+        "@kuma-00/mogu-ffi-linux-x64": "1.1.0",
+        "@kuma-00/mogu-ffi-win32-x64": "1.1.0",
       },
     },
     "packages/mogu-ffi-darwin-arm64": {
       "name": "@kuma-00/mogu-ffi-darwin-arm64",
-      "version": "1.0.11",
+      "version": "1.1.0",
     },
     "packages/mogu-ffi-linux-x64": {
       "name": "@kuma-00/mogu-ffi-linux-x64",
-      "version": "1.0.11",
+      "version": "1.1.0",
     },
     "packages/mogu-ffi-win32-x64": {
       "name": "@kuma-00/mogu-ffi-win32-x64",
-      "version": "1.0.11",
+      "version": "1.1.0",
     },
   },
   "packages": {
