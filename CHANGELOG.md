@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/kuma-00/Mogu2/compare/v1.1.1...v1.1.2) (2026-08-02)
+
+
+### Bug Fixes
+
+* expose TypeScript declarations for Bun package ([f361db2](https://github.com/kuma-00/Mogu2/commit/f361db2f9369fa182599ebc7a29540664e680e7d))
+
 ## [1.1.1](https://github.com/kuma-00/Mogu2/compare/v1.1.0...v1.1.1) (2026-08-02)
 
 
