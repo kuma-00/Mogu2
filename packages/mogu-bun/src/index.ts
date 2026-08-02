@@ -1,10 +1,11 @@
 import { dlopen, FFIType, CString, ptr, type Pointer } from "bun:ffi";
 import { existsSync } from "node:fs";
-import { resolve, join } from "node:path";
+import { resolve } from "node:path";
 import {
   ensureModel,
   type ModelDownloadOptions,
 } from "./model.ts";
+import { findLibrary } from "./library.ts";
 
 export {
   DEFAULT_MODEL_FILENAME,
@@ -65,46 +66,6 @@ export interface FoodDetectorConfig {
 }
 
 // ─── Library loading ─────────────────────────────────────────────────────────
-
-function findLibrary(): string {
-  const thisDir = import.meta.dir;
-  const platform = process.platform;
-  const arch = process.arch;
-
-  const libName =
-    platform === "win32"
-      ? "mogu_ffi.dll"
-      : platform === "darwin"
-        ? "libmogu_ffi.dylib"
-        : "libmogu_ffi.so";
-
-  const pkgName = `@kuma-00/mogu-ffi-${platform}-${arch}`;
-
-  const candidates = [
-    join(thisDir, "node_modules", pkgName, libName),
-    join(thisDir, "../..", "node_modules", pkgName, libName),
-    join(thisDir, "../../target/debug", libName),
-    join(thisDir, "../../target/release", libName),
-    join(thisDir, "../../crates/mogu-ffi/target/debug", libName),
-    join(thisDir, "../../crates/mogu-ffi/target/release", libName),
-    process.env["MOGU_FFI_LIB"] ?? "",
-  ];
-
-  for (const candidate of candidates) {
-    if (candidate && existsSync(candidate)) {
-      return resolve(candidate);
-    }
-  }
-
-  throw new Error(
-    `libmogu_ffi shared library not found.\n` +
-      `  Tried:\n${candidates.filter(Boolean).map((c) => `    - ${c}`).join("\n")}\n\n` +
-      `  Solutions:\n` +
-      `  1. Install from npm: bun add @kuma-00/mogu-bun\n` +
-      `  2. Build manually: cargo build --release --package mogu-ffi\n` +
-      `  3. Set MOGU_FFI_LIB env var to the library path`
-  );
-}
 
 const lib = dlopen(findLibrary(), {
   detector_new: {

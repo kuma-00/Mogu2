@@ -2,7 +2,7 @@
  * mogu-bun example
  *
  * Usage:
- *   bun run packages/mogu-bun/example.ts <image-path>
+ *   bun run packages/mogu-bun/src/example.ts <image-path>
  *
  * The script accepts any image file supported by the `image` crate
  * (JPEG, PNG, WebP, BMP, etc.).
@@ -16,11 +16,11 @@ import { resolve } from "node:path";
 
 const imagePath = process.argv[2];
 if (!imagePath) {
-  console.error("Usage: bun run packages/mogu-bun/example.ts <image-path>");
+  console.error("Usage: bun run packages/mogu-bun/src/example.ts <image-path>");
   process.exit(1);
 }
 
-const MODEL_PATH = resolve(import.meta.dir, "../../models/MobileNetV4-Conv-Small.onnx");
+const MODEL_PATH = resolve(import.meta.dir, "../../../models/MobileNetV4-Conv-Small.onnx");
 
 // ─── Run ─────────────────────────────────────────────────────────────────────
 

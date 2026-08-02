@@ -104,7 +104,7 @@ jobs:
         run: |
           bun --version
           bun --eval "
-          import { FoodDetector } from './packages/mogu-bun/index.ts';
+          import { FoodDetector } from './packages/mogu-bun/src/index.ts';
           console.log('✅ FoodDetector imported successfully');
           console.log('Library path loaded from local build');
           // FoodDetector は生成しないが、import 時点で findLibrary() と dlopen() は実行されるため、共有ライブラリの探索とロード確認にはなる
@@ -176,7 +176,7 @@ jobs:
           node -p "JSON.stringify(require('./package.json').publishConfig)"
 
       - name: Inspect main package contents
-        run: node scripts/validate-npm-pack.mjs packages/mogu-bun index.ts
+        run: node scripts/validate-npm-pack.mjs packages/mogu-bun src/index.ts
 
       - name: Publish main package with OIDC
         run: node scripts/publish-main.mjs

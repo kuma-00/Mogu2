@@ -1,14 +1,45 @@
-import { describe, test, expect } from "bun:test";
-import { FoodDetector } from "./index";
+import { beforeAll, describe, test, expect } from "bun:test";
 import { resolve } from "node:path";
+import { existsSync } from "node:fs";
+import { findLibrary } from "./library";
+
+let FoodDetector: typeof import("./index").FoodDetector;
+const nativeLibraryAvailable = (() => {
+  try {
+    findLibrary();
+    return true;
+  } catch {
+    return false;
+  }
+})();
+
+beforeAll(async () => {
+  if (nativeLibraryAvailable) {
+    ({ FoodDetector } = await import("./index"));
+  }
+});
 
 describe("FoodDetector", () => {
   // Skip tests if model is not available
-  const modelPath = resolve("../../models/MobileNetV4-Conv-Small.onnx");
+  const modelPath = resolve(
+    import.meta.dir,
+    "../../../models/MobileNetV4-Conv-Small.onnx",
+  );
+  const detectorTestsAvailable =
+    nativeLibraryAvailable && existsSync(modelPath);
+
+  test("package import smoke test", () => {
+    if (!nativeLibraryAvailable) {
+      console.log("Skipping smoke test: native library not found");
+      return;
+    }
+
+    expect(FoodDetector).toBeDefined();
+  });
 
   test("close() can be called multiple times without crashing", () => {
-    if (!require("node:fs").existsSync(modelPath)) {
-      console.log("Skipping test: model not found");
+    if (!detectorTestsAvailable) {
+      console.log("Skipping test: native library or model not found");
       return;
     }
 
@@ -19,8 +50,8 @@ describe("FoodDetector", () => {
   });
 
   test("detectFood() throws error after close()", () => {
-    if (!require("node:fs").existsSync(modelPath)) {
-      console.log("Skipping test: model not found");
+    if (!detectorTestsAvailable) {
+      console.log("Skipping test: native library or model not found");
       return;
     }
 
@@ -31,8 +62,8 @@ describe("FoodDetector", () => {
   });
 
   test("setConfig() throws error after close()", () => {
-    if (!require("node:fs").existsSync(modelPath)) {
-      console.log("Skipping test: model not found");
+    if (!detectorTestsAvailable) {
+      console.log("Skipping test: native library or model not found");
       return;
     }
 
@@ -43,13 +74,18 @@ describe("FoodDetector", () => {
   });
 
   test("constructor throws error for non-existent model path", () => {
+    if (!nativeLibraryAvailable) {
+      console.log("Skipping test: native library not found");
+      return;
+    }
+
     const nonExistentPath = resolve("/non/existent/model.onnx");
     expect(() => new FoodDetector(nonExistentPath)).toThrow("Model file not found");
   });
 
   test("detectFood() handles corrupted image data", () => {
-    if (!require("node:fs").existsSync(modelPath)) {
-      console.log("Skipping test: model not found");
+    if (!detectorTestsAvailable) {
+      console.log("Skipping test: native library or model not found");
       return;
     }
 
@@ -61,8 +97,8 @@ describe("FoodDetector", () => {
   });
 
   test("setConfig() applies partial configuration", () => {
-    if (!require("node:fs").existsSync(modelPath)) {
-      console.log("Skipping test: model not found");
+    if (!detectorTestsAvailable) {
+      console.log("Skipping test: native library or model not found");
       return;
     }
 
@@ -78,8 +114,8 @@ describe("FoodDetector", () => {
   });
 
   test("Symbol.dispose works correctly", () => {
-    if (!require("node:fs").existsSync(modelPath)) {
-      console.log("Skipping test: model not found");
+    if (!detectorTestsAvailable) {
+      console.log("Skipping test: native library or model not found");
       return;
     }
 
