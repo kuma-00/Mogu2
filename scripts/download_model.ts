@@ -1,6 +1,6 @@
-import { downloadFile } from "@huggingface/hub";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { downloadFile } from "@huggingface/hub";
 
 const modelDir = join(import.meta.dir, "../models");
 const modelPath = join(modelDir, "MobileNetV4-Conv-Small.onnx");

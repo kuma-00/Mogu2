@@ -1,5 +1,5 @@
-import { readFileSync } from "node:fs";
 import { execSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 
 const pkg = JSON.parse(readFileSync("packages/mogu-bun/package.json", "utf8"));
 const version = pkg.version;
@@ -19,11 +19,13 @@ function packageVersionExists(pkgName, version) {
         env: {
           ...process.env,
         },
-      }
+      },
     ).trim();
     return out === version;
   } catch (e) {
-    console.log(`Package version check failed (may not exist or auth issue): ${e.message}`);
+    console.log(
+      `Package version check failed (may not exist or auth issue): ${e.message}`,
+    );
     return false;
   }
 }
@@ -32,7 +34,9 @@ function packageVersionExists(pkgName, version) {
 console.log(`Checking if ${pkgName}@${version} exists in registry...`);
 const pkgExists = packageVersionExists(pkgName, version);
 if (pkgExists) {
-  console.log(`⏭️  Package ${pkgName}@${version} already exists in registry, skipping publish`);
+  console.log(
+    `⏭️  Package ${pkgName}@${version} already exists in registry, skipping publish`,
+  );
 } else {
   console.log(`Publishing ${pkgName}@${version}...`);
   try {
@@ -45,10 +49,10 @@ if (pkgExists) {
         env: {
           ...process.env,
         },
-      }
+      },
     );
     console.log(`✅ Published ${pkgName} ${version}`);
-  } catch (error) {
+  } catch {
     console.error(`❌ Failed to publish ${pkgName} ${version}`);
     process.exit(1);
   }

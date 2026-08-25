@@ -9,9 +9,11 @@
   "scripts": {
     "sync-cargo-version": "node scripts/sync-cargo-version.mjs",
     "publish-main": "node scripts/publish-main.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "biome check packages/mogu-bun/src scripts && tsc --noEmit",
+    "biome:write": "biome check --write packages/mogu-bun/src scripts"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.10",
     "@huggingface/hub": "^2.13.2",
     "@types/bun": "^1.4.0",
     "typescript": "^7.0.2"

@@ -1,6 +1,6 @@
-import { beforeAll, describe, test, expect } from "bun:test";
-import { resolve } from "node:path";
+import { beforeAll, describe, expect, test } from "bun:test";
 import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 import { findLibrary } from "./library";
 
 let FoodDetector: typeof import("./index").FoodDetector;
@@ -58,7 +58,9 @@ describe("FoodDetector", () => {
     const detector = new FoodDetector(modelPath);
     detector.close();
 
-    expect(() => detector.detectFood(modelPath)).toThrow("FoodDetector is already closed");
+    expect(() => detector.detectFood(modelPath)).toThrow(
+      "FoodDetector is already closed",
+    );
   });
 
   test("setConfig() throws error after close()", () => {
@@ -70,7 +72,9 @@ describe("FoodDetector", () => {
     const detector = new FoodDetector(modelPath);
     detector.close();
 
-    expect(() => detector.setConfig({ threshold: 0.5 })).toThrow("FoodDetector is already closed");
+    expect(() => detector.setConfig({ threshold: 0.5 })).toThrow(
+      "FoodDetector is already closed",
+    );
   });
 
   test("constructor throws error for non-existent model path", () => {
@@ -80,7 +84,9 @@ describe("FoodDetector", () => {
     }
 
     const nonExistentPath = resolve("/non/existent/model.onnx");
-    expect(() => new FoodDetector(nonExistentPath)).toThrow("Model file not found");
+    expect(() => new FoodDetector(nonExistentPath)).toThrow(
+      "Model file not found",
+    );
   });
 
   test("detectFood() handles corrupted image data", () => {
@@ -103,13 +109,13 @@ describe("FoodDetector", () => {
     }
 
     const detector = new FoodDetector(modelPath);
-    
+
     // Set only threshold
     detector.setConfig({ threshold: 0.5 });
-    
+
     // Set only top_k
     detector.setConfig({ top_k: 5 });
-    
+
     detector.close();
   });
 
@@ -121,7 +127,9 @@ describe("FoodDetector", () => {
 
     const detector = new FoodDetector(modelPath);
     detector[Symbol.dispose]();
-    
-    expect(() => detector.detectFood(modelPath)).toThrow("FoodDetector is already closed");
+
+    expect(() => detector.detectFood(modelPath)).toThrow(
+      "FoodDetector is already closed",
+    );
   });
 });

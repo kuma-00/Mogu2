@@ -1,6 +1,6 @@
-import { existsSync, readdirSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { type Dirent, existsSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 export interface FindLibraryOptions {
   /** Directory containing the source module. Defaults to this module's directory. */
@@ -70,7 +70,7 @@ function isolatedLinkerCandidates(
 
   for (const directory of ancestorDirectories(baseDir)) {
     const bunDirectory = join(directory, "node_modules", ".bun");
-    let entries;
+    let entries: Dirent[];
     try {
       entries = readdirSync(bunDirectory, { withFileTypes: true });
     } catch {
@@ -87,7 +87,13 @@ function isolatedLinkerCandidates(
       }
 
       candidates.push(
-        join(bunDirectory, entry.name, "node_modules", packageName, libraryName),
+        join(
+          bunDirectory,
+          entry.name,
+          "node_modules",
+          packageName,
+          libraryName,
+        ),
       );
     }
   }
@@ -112,7 +118,7 @@ export function findLibrary(options: FindLibraryOptions = {}): string {
   };
 
   // An explicit path is the most specific configuration and must win.
-  addCandidate(options.envValue ?? process.env["MOGU_FFI_LIB"]);
+  addCandidate(options.envValue ?? process.env.MOGU_FFI_LIB);
 
   // Resolving the file as a package subpath works with Bun's isolated linker,
   // including its .bun/<package>@<version>/node_modules layout.
@@ -136,8 +142,12 @@ export function findLibrary(options: FindLibraryOptions = {}): string {
   // Preserve the existing source-tree/manual-build locations.
   addCandidate(join(packageRoot, "../../target/debug", libraryName));
   addCandidate(join(packageRoot, "../../target/release", libraryName));
-  addCandidate(join(packageRoot, "../../crates/mogu-ffi/target/debug", libraryName));
-  addCandidate(join(packageRoot, "../../crates/mogu-ffi/target/release", libraryName));
+  addCandidate(
+    join(packageRoot, "../../crates/mogu-ffi/target/debug", libraryName),
+  );
+  addCandidate(
+    join(packageRoot, "../../crates/mogu-ffi/target/release", libraryName),
+  );
 
   for (const candidate of candidates) {
     if (existsSync(candidate)) {

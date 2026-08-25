@@ -1,12 +1,7 @@
 import { describe, expect, test } from "bun:test";
-import {
-  mkdirSync,
-  mkdtempSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
-import { dirname, join } from "node:path";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
+import { dirname, join } from "node:path";
 import { findLibrary } from "./library";
 
 function createFixture(relativeFiles: string[]): {
@@ -115,9 +110,7 @@ describe("findLibrary", () => {
   });
 
   test("keeps manual debug build candidates working", () => {
-    const fixture = createFixture([
-      "source/target/debug/libmogu_ffi.so",
-    ]);
+    const fixture = createFixture(["source/target/debug/libmogu_ffi.so"]);
     try {
       expect(
         findLibrary({

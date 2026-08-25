@@ -1,11 +1,8 @@
-import { dlopen, FFIType, CString, ptr } from "bun:ffi";
+import { CString, dlopen, FFIType, ptr } from "bun:ffi";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
-import {
-  ensureModel,
-  type ModelDownloadOptions,
-} from "./model.ts";
 import { findLibrary } from "./library.ts";
+import { ensureModel, type ModelDownloadOptions } from "./model.ts";
 
 export {
   DEFAULT_MODEL_FILENAME,
@@ -84,7 +81,7 @@ const lib = dlopen(findLibrary(), {
     args: [
       FFIType.pointer, // detector*
       FFIType.pointer, // img_bytes*
-      FFIType.u64,     // img_bytes_len (usize → u64 on 64-bit)
+      FFIType.u64, // img_bytes_len (usize → u64 on 64-bit)
     ],
     returns: FFIType.pointer,
   },
@@ -155,7 +152,7 @@ export class FoodDetector {
       throw new Error(`Model file not found: ${resolved}`);
     }
 
-    const pathBuf = Buffer.from(resolved + "\0");
+    const pathBuf = Buffer.from(`${resolved}\0`);
     const detectorPtr = lib.symbols.detector_new(pathBuf);
     if (detectorPtr === null) {
       throw new Error(`Failed to load model from: ${resolved}`);
@@ -172,11 +169,8 @@ export class FoodDetector {
       throw new Error("FoodDetector is already closed");
     }
     const configJson = JSON.stringify(config);
-    const configBuf = Buffer.from(configJson + "\0");
-    const rawPtr = lib.symbols.detector_set_config_json(
-      this.#ptr,
-      configBuf
-    );
+    const configBuf = Buffer.from(`${configJson}\0`);
+    const rawPtr = lib.symbols.detector_set_config_json(this.#ptr, configBuf);
     readAndFreeJsonPointer(rawPtr);
   }
 
@@ -187,7 +181,7 @@ export class FoodDetector {
   detectFood(image: string): FoodDetectionResult;
   detectFood(image: Uint8Array | Buffer | ArrayBuffer): FoodDetectionResult;
   detectFood(
-    image: string | Uint8Array | Buffer | ArrayBuffer
+    image: string | Uint8Array | Buffer | ArrayBuffer,
   ): FoodDetectionResult {
     if (this.#ptr === null) {
       throw new Error("FoodDetector is already closed");
@@ -195,21 +189,16 @@ export class FoodDetector {
     let rawPtr: FFIPointer;
 
     if (typeof image === "string") {
-      const pathBuf = Buffer.from(resolve(image) + "\0");
-      rawPtr = lib.symbols.detector_detect_food_by_path(
-        this.#ptr,
-        pathBuf
-      );
+      const pathBuf = Buffer.from(`${resolve(image)}\0`);
+      rawPtr = lib.symbols.detector_detect_food_by_path(this.#ptr, pathBuf);
     } else {
       const bytes =
-        image instanceof ArrayBuffer
-          ? new Uint8Array(image)
-          : image; // Uint8Array or Buffer (Buffer extends Uint8Array)
+        image instanceof ArrayBuffer ? new Uint8Array(image) : image; // Uint8Array or Buffer (Buffer extends Uint8Array)
 
       rawPtr = lib.symbols.detector_detect_food(
         this.#ptr,
         ptr(bytes),
-        bytes.byteLength
+        bytes.byteLength,
       );
     }
 

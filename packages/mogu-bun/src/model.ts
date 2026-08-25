@@ -1,4 +1,3 @@
-import { downloadFile } from "@huggingface/hub";
 import {
   existsSync,
   mkdirSync,
@@ -7,6 +6,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { downloadFile } from "@huggingface/hub";
 
 export const DEFAULT_MODEL_FILENAME = "MobileNetV4-Conv-Small.onnx";
 export const DEFAULT_MODEL_REPOSITORY =

@@ -6,7 +6,9 @@ import { basename, join, resolve } from "node:path";
 const [packageDir, requiredFile] = process.argv.slice(2);
 
 if (!packageDir || !requiredFile) {
-  console.error("Usage: node scripts/validate-npm-pack.mjs <package-dir> <required-file>");
+  console.error(
+    "Usage: node scripts/validate-npm-pack.mjs <package-dir> <required-file>",
+  );
   process.exit(2);
 }
 
@@ -24,19 +26,15 @@ const npmCommandArgs =
 const npmCache = mkdtempSync(join(tmpdir(), "mogu-npm-pack-"));
 let output;
 try {
-  output = execFileSync(
-    npmCommand,
-    npmCommandArgs,
-    {
-      cwd: absolutePackageDir,
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "inherit"],
-      env: {
-        ...process.env,
-        npm_config_cache: npmCache,
-      },
+  output = execFileSync(npmCommand, npmCommandArgs, {
+    cwd: absolutePackageDir,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "inherit"],
+    env: {
+      ...process.env,
+      npm_config_cache: npmCache,
     },
-  );
+  });
 } finally {
   rmSync(npmCache, { recursive: true, force: true });
 }
@@ -57,7 +55,7 @@ if (!packedPaths.has(requiredFile)) {
 
 const sensitiveNames = new Set([".env", ".npmrc"]);
 const sensitiveFile = pack.files.find(({ path }) =>
-  sensitiveNames.has(basename(path))
+  sensitiveNames.has(basename(path)),
 );
 if (sensitiveFile) {
   throw new Error(`Sensitive file included in package: ${sensitiveFile.path}`);

@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
-import { downloadModel, getDefaultModelPath } from "./model.ts";
 import { parseArgs } from "node:util";
+import { downloadModel, getDefaultModelPath } from "./model.ts";
 
 let values: {
   force?: boolean;

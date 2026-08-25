@@ -8,9 +8,9 @@
  * (JPEG, PNG, WebP, BMP, etc.).
  */
 
-import { FoodDetector } from "./index.ts";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { FoodDetector } from "./index.ts";
 
 // ─── Args ─────────────────────────────────────────────────────────────────────
 
@@ -20,7 +20,10 @@ if (!imagePath) {
   process.exit(1);
 }
 
-const MODEL_PATH = resolve(import.meta.dir, "../../../models/MobileNetV4-Conv-Small.onnx");
+const MODEL_PATH = resolve(
+  import.meta.dir,
+  "../../../models/MobileNetV4-Conv-Small.onnx",
+);
 
 // ─── Run ─────────────────────────────────────────────────────────────────────
 
@@ -44,7 +47,7 @@ console.log(`   tableware_prob: ${result.tableware_prob.toFixed(4)}`);
 console.log(`\n📋  Top labels:`);
 for (const label of result.top_labels.slice(0, 5)) {
   console.log(
-    `   [${String(label.index).padStart(4)}] ${(label.probability * 100).toFixed(2).padStart(6)}%  ${label.category.padEnd(12)}  ${label.label}`
+    `   [${String(label.index).padStart(4)}] ${(label.probability * 100).toFixed(2).padStart(6)}%  ${label.category.padEnd(12)}  ${label.label}`,
   );
 }
 
