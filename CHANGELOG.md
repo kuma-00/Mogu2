@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.3](https://github.com/kuma-00/Mogu2/compare/v1.1.2...v1.1.3) (2026-08-25)
+
+
+### Miscellaneous
+
+* configure Biome formatting and upgrade TypeScript ([80036ed](https://github.com/kuma-00/Mogu2/commit/80036ed3b35330d11c655f4edb0e8e8e5738c34d))
+* enable Biome linting ([57d3694](https://github.com/kuma-00/Mogu2/commit/57d36940d27484f7a77fd7fb5c9bf96e832a6f58))
+* pin Bun 1.4 and update package dependencies ([ee4e1bc](https://github.com/kuma-00/Mogu2/commit/ee4e1bc7e41e2b798d26a099a2b58370d2826c13))
+
 ## [1.1.2](https://github.com/kuma-00/Mogu2/compare/v1.1.1...v1.1.2) (2026-08-02)
 
 
