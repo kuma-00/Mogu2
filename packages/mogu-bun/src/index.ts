@@ -1,4 +1,4 @@
-import { dlopen, FFIType, CString, ptr, type Pointer } from "bun:ffi";
+import { dlopen, FFIType, CString, ptr } from "bun:ffi";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import {
@@ -108,18 +108,20 @@ const lib = dlopen(findLibrary(), {
   },
 });
 
+type FFIPointer = ReturnType<typeof lib.symbols.detector_new>;
+
 // ─── Helper ──────────────────────────────────────────────────────────────────
 
 export function getDefaultConfig(): FoodDetectorConfig {
-  const rawPtr = lib.symbols.detector_get_default_config() as Pointer | null;
+  const rawPtr = lib.symbols.detector_get_default_config();
   return readAndFreeJsonPointer(rawPtr) as FoodDetectorConfig;
 }
 
-function readAndFreeJsonPointer(rawPtr: Pointer | null): unknown {
+function readAndFreeJsonPointer(rawPtr: FFIPointer): unknown {
   if (rawPtr === null) {
     throw new Error("FFI returned null pointer");
   }
-  const jsonStr = new CString(rawPtr).toString();
+  const jsonStr = new CString(rawPtr);
   lib.symbols.detector_free_string(rawPtr);
   const parsed = JSON.parse(jsonStr) as unknown;
   if (
@@ -136,7 +138,7 @@ function readAndFreeJsonPointer(rawPtr: Pointer | null): unknown {
 // ─── FoodDetector ────────────────────────────────────────────────────────────
 
 export class FoodDetector {
-  #ptr: Pointer | null;
+  #ptr: FFIPointer;
 
   /**
    * Create a detector, downloading the model into ./models on first use.
@@ -174,7 +176,7 @@ export class FoodDetector {
     const rawPtr = lib.symbols.detector_set_config_json(
       this.#ptr,
       configBuf
-    ) as Pointer | null;
+    );
     readAndFreeJsonPointer(rawPtr);
   }
 
@@ -190,14 +192,14 @@ export class FoodDetector {
     if (this.#ptr === null) {
       throw new Error("FoodDetector is already closed");
     }
-    let rawPtr: Pointer | null;
+    let rawPtr: FFIPointer;
 
     if (typeof image === "string") {
       const pathBuf = Buffer.from(resolve(image) + "\0");
       rawPtr = lib.symbols.detector_detect_food_by_path(
         this.#ptr,
         pathBuf
-      ) as Pointer | null;
+      );
     } else {
       const bytes =
         image instanceof ArrayBuffer
@@ -208,7 +210,7 @@ export class FoodDetector {
         this.#ptr,
         ptr(bytes),
         bytes.byteLength
-      ) as Pointer | null;
+      );
     }
 
     return readAndFreeJsonPointer(rawPtr) as FoodDetectionResult;

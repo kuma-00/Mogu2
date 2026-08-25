@@ -98,6 +98,8 @@ jobs:
           node -p "JSON.stringify(require('./package.json').publishConfig)"
 
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
 
       - name: Smoke test library loading
         shell: bash

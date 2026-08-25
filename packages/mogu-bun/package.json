@@ -27,8 +27,8 @@
     "@huggingface/hub": "^2.13.2"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "typescript": "^7.0.1-rc"
+    "@types/bun": "^1.4.0",
+    "typescript": "^7.0.2"
   },
   "license": "MIT",
   "repository": {
